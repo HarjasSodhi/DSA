@@ -413,11 +413,12 @@ public class NextGreaterSet {
     }
 
     // leetcode 1249
+    // follow up - there can be more than one type of bracket like {},(),[]
     public String minRemoveToMakeValid(String s) {
         StringBuilder sb = new StringBuilder();
         Stack<Integer> st = new Stack<>();
         st.push(-1);
-        
+
         for (int i = 0; i < s.length(); i++) {
             char ch = s.charAt(i);
             if (st.peek() != -1 && ch == ')') {
@@ -436,5 +437,25 @@ public class NextGreaterSet {
 
         return sb.toString();
     }
+
+    // leetcode 921
+    public int minAddToMakeValid(String s) {
+        int ans = 0;
+        Stack<Character> st = new Stack<>();
+
+        for (char ch : s.toCharArray()) {
+            if (ch == ')') {
+                if (st.size() != 0) {
+                    st.pop();
+                } else {
+                    ans++;
+                }
+            } else
+                st.push('(');
+        }
+        return ans + st.size();
+    }
+
+    // remove redundant brackets question
 
 }
