@@ -222,14 +222,4 @@ public class HeapQuestions {
         return ans;
     }
 
-    // 1218
-    // public int longestSubsequence(int[] arr, int difference) {
-
-    // }
-
-    // 1027
-    // public int longestArithSeqLength(int[] nums) {
-
-    // }
-
 }
