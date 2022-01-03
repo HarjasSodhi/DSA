@@ -222,4 +222,46 @@ public class HeapQuestions {
         return ans;
     }
 
+    // 295
+    class MedianFinder {
+        int size;
+        PriorityQueue<Integer> right;
+        PriorityQueue<Integer> left;
+
+        public MedianFinder() {
+            size = 0;
+            right = new PriorityQueue<>();
+            left = new PriorityQueue<>((a, b) -> {
+                return b - a;
+            });
+        }
+
+        public void addNum(int num) {
+            if (size == 0) {
+                left.add(num);
+            } else {
+                if (num > left.peek()) {
+                    right.add(num);
+                } else {
+                    left.add(num);
+                }
+                if (left.size() - right.size() == 2) {
+                    right.add(left.remove());
+                }
+                if (left.size() - right.size() == -1) {
+                    left.add(right.remove());
+                }
+            }
+            size++;
+        }
+
+        public double findMedian() {
+            if (size % 2 == 0) {
+                return ((left.peek() + right.peek()) / 2) * 1.0;
+            } else {
+                return left.peek() * 1.0;
+            }
+        }
+    }
+
 }

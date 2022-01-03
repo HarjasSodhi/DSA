@@ -121,6 +121,66 @@ public class HashmapQuestions {
     // uses dp
     // }
 
+    // leetcode 954
+    public boolean canReorderDoubled(int[] arr) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        Integer[] ARR = new Integer[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
+            ARR[i] = arr[i];
+        }
+        Arrays.sort(ARR, (a, b) -> {
+            return Math.abs(a) - Math.abs(b);
+        });
+        for (int e : ARR) {
+            if (map.get(e) == 0)
+                continue;
+            if (map.getOrDefault(2 * e, 0) == 0)
+                return false;
+            map.put(e, map.get(e) - 1);
+            map.put(2 * e, map.get(2 * e) - 1);
+        }
+        return true;
+    }
+
+    // leetcode 127
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        HashSet<String> set = new HashSet<>();
+        for (String s : wordList) {
+            set.add(s);
+        }
+        if (!set.contains(endWord))
+            return 0;
+        LinkedList<String> que = new LinkedList<>();
+        int level = 1;
+        que.addFirst(beginWord);
+        while (que.size() != 0) {
+            int size = que.size();
+            while (size-- > 0) {
+                String s = que.removeFirst();
+                char[] temp = s.toCharArray();
+                for (int i = 0; i < temp.length; i++) {
+                    for (char j = 'a'; j <= 'z'; j++) {
+                        if (temp[i] == j)
+                            continue;
+                        temp[i] = j;
+                        String newStr=new String(temp);
+                        if (endWord.equals(newStr)) {
+                            return level + 1;
+                        }
+                        if (set.contains(newStr)) {
+                            que.addLast(newStr);
+                            set.remove(newStr);
+                        }
+                    }
+                    temp = s.toCharArray();
+                }
+            }
+            level++;
+        }
+        return 0;
+    }
+
     
 
 }
