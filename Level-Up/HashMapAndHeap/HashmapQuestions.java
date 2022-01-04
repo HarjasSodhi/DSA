@@ -164,7 +164,7 @@ public class HashmapQuestions {
                         if (temp[i] == j)
                             continue;
                         temp[i] = j;
-                        String newStr=new String(temp);
+                        String newStr = new String(temp);
                         if (endWord.equals(newStr)) {
                             return level + 1;
                         }
@@ -181,6 +181,107 @@ public class HashmapQuestions {
         return 0;
     }
 
-    
+    // leetcode 380
+    class RandomizedSet {
+        private HashMap<Integer, Integer> set;
+        private ArrayList<Integer> arr;
+        private int size;
+
+        public RandomizedSet() {
+            set = new HashMap<>();
+            arr = new ArrayList<>();
+            size = 0;
+        }
+
+        public boolean insert(int val) {
+            if (set.containsKey(val)) {
+                return false;
+            }
+            set.put(val, size);
+            arr.add(val);
+            size++;
+            return true;
+        }
+
+        public boolean remove(int val) {
+            if (set.containsKey(val)) {
+                int idx = set.get(val);
+                int temp = arr.get(size - 1);
+                arr.set(idx, temp);
+                set.put(temp, idx);
+                arr.remove(size - 1);
+                set.remove(val);
+                size--;
+                return true;
+            }
+            return false;
+        }
+
+        public int getRandom() {
+            System.out.println(size);
+            int rand = (int) Math.floor((Math.random() * size - 1));
+            System.out.println(rand);
+            return arr.get(rand);
+        }
+    }
+
+    // leetcode 447
+    public int numberOfBoomerangs(int[][] points) {
+        int n = points.length;
+        if (n < 3)
+            return 0;
+        int ans = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == j)
+                    continue;
+                int[] p1 = points[i];
+                int[] p2 = points[j];
+                int dist = dist(p1, p2);
+                map.put(dist, map.getOrDefault(dist, 0) + 1);
+            }
+            for (Integer e : map.values()) {
+                ans += e * (e - 1);
+            }
+            map.clear();
+        }
+        return ans;
+    }
+
+    public int dist(int[] p1, int[] p2) {
+        return ((p2[0] - p1[0]) * (p2[0] - p1[0])) + ((p2[1] - p1[1]) * (p2[1] - p1[1]));
+    }
+
+    // leetcode 149
+    public int maxPoints(int[][] points) {
+        int ans = 1;
+        int n = points.length;
+        HashMap<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            int max = 0;
+            for (int j = 0; j < n; j++) {
+                if (i == j)
+                    continue;
+                int x = points[i][0] - points[j][0];
+                int y = points[i][1] - points[j][1];
+                int gcd = gcd(x, y);
+                x /= gcd;
+                y /= gcd;
+                String s = y + "@" + x;
+                map.put(s, map.getOrDefault(s, 1) + 1);
+                max = map.get(s);
+                ans = Math.max(ans, max);
+            }
+            map.clear();
+        }
+        return ans;
+    }
+
+    public int gcd(int a, int b) {
+        if (b == 0)
+            return a;
+        return gcd(b, a % b);
+    }
 
 }
