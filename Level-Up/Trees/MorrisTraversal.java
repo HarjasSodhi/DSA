@@ -72,8 +72,8 @@ public class MorrisTraversal {
     // morris post order is not possible
 
     // leetcode 98
-    public boolean isValidBST(Node root) {
-
-    }
+    // public boolean isValidBST(Node root) {
+    // maintain ranges
+    // }
 
 }
