@@ -201,5 +201,60 @@ public class Graph {
             }
         }
     }
-    
+
+    // in this BFS, we mark node visited,after it is rmeoved from the que,
+    // this BFS helps in cycle detection
+    public static void BFS1(int src, ArrayList<Edge>[] arr) {
+        LinkedList<Integer> que = new LinkedList<>();
+        boolean[] vis = new boolean[arr.length];
+        que.addLast(src);
+        int level = 0;
+        boolean cycleExists = false;
+        while (que.size() != 0) {
+            int size = que.size();
+            while (size-- > 0) {
+                int temp = que.removeFirst();
+                if (vis[temp]) {
+                    cycleExists = true;
+                    continue;
+                }
+                vis[temp] = true;
+                for (Edge e : arr[temp]) {
+                    if (!vis[e.v])
+                        que.addLast(e.v);
+                }
+            }
+            System.out.println(level);
+            level++;
+        }
+        if (cycleExists) {
+            System.out.println("Cycle Exists");
+        }
+    }
+
+    // in this BFS,we mark node visited when it is added in the que,
+    // this avoids redundant calls that are resulted due to a cycle
+    // gives us shortest path between src node and other nodes
+    public static void BFS2(int src, ArrayList<Edge>[] arr) {
+        LinkedList<Integer> que = new LinkedList<>();
+        int level = 0;
+        boolean[] vis = new boolean[arr.length];
+        que.addLast(src);
+        vis[src] = true;
+        while (que.size() != 0) {
+            int size = que.size();
+            while (size-- > 0) {
+                int temp = que.removeFirst();
+                for (Edge e : arr[temp]) {
+                    if (!vis[e.v]) {
+                        vis[e.v] = true;
+                        que.addLast(e.v);
+                    }
+                }
+            }
+            System.out.println(level);
+            level++;
+        }
+    }
+
 }
