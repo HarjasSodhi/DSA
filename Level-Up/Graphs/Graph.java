@@ -61,7 +61,8 @@ public class Graph {
 
     public void addEdge(int u, int v, int wt, ArrayList<Edge>[] arr) {
         arr[u].add(new Edge(v, wt));
-        arr[v].add(new Edge(u, wt));
+
+        arr[v].add(new Edge(u, wt)); // not done in directed graph
     }
 
     public int findEdge(int u, int v, ArrayList<Edge>[] arr) {
@@ -77,8 +78,9 @@ public class Graph {
     public void removeEdge(int u, int v, ArrayList<Edge>[] arr) {
         int idxV = findEdge(u, v, arr);
         arr[u].remove(idxV);
-        int idxU = findEdge(v, u, arr);
-        arr[v].remove(idxU);
+
+        int idxU = findEdge(v, u, arr); // not done in directed graph
+        arr[v].remove(idxU); // not done in directed graph
     }
 
     public boolean hasPath(int src, int dest, ArrayList<Edge>[] arr) {
@@ -200,6 +202,31 @@ public class Graph {
                 getConnectedComponentsHelper(e.v, arr, vis, temp);
             }
         }
+    }
+
+    public void topoLogicalSorting1(ArrayList<Edge>[] arr) {
+        int size = arr.length;
+        ArrayList<Integer> list = new ArrayList<>();
+        boolean[] vis = new boolean[size];
+
+        for (int i = 0; i < size; i++) {
+            if (!vis[i])
+                topoLogicalDFSHelper(i, vis, arr, list);
+        }
+
+        for (int i = list.size() - 1; i >= 0; i--) {
+            System.out.print(list.get(i) + " ");
+        }
+    }
+
+    public void topoLogicalDFSHelper(int src, boolean[] vis, ArrayList<Edge>[] arr, ArrayList<Integer> list) {
+        vis[src] = true;
+        for (Edge e : arr[src]) {
+            if (!vis[e.v]) {
+                topoLogicalDFSHelper(e.v, vis, arr, list);
+            }
+        }
+        list.add(src);
     }
 
     // in this BFS, we mark node visited,after it is rmeoved from the que,

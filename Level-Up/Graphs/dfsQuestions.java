@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class dfsQuestions {
     // remeber-> sometimes you need to let the recursive calls going even if you
     // find the answer.
@@ -70,43 +72,6 @@ public class dfsQuestions {
         }
         return ans;
     }
-
-    // leetcode 130
-    // public void solve(char[][] board) {
-    // for (int i = 0; i < board.length; i++) {
-    // for (int j = 0; j < board[0].length; j++) {
-    // if (board[i][j] == 'v' || board[i][j] == 'X')
-    // continue;
-    // solveHelper(i, j, board);
-    // }
-    // }
-    // for (int i = 0; i < board.length; i++) {
-    // for (int j = 0; j < board[0].length; j++) {
-    // if (board[i][j] == 'v')
-    // board[i][j] = 'O';
-    // }
-    // }
-    // }
-
-    // public boolean solveHelper(int r, int c, char[][] board) {
-    // if (r == 0 || r == board.length - 1 || c == 0 || c == board[0].length - 1) {
-    // return false;
-    // }
-    // boolean ans = true;
-    // board[r][c] = 'v';
-    // int[][] dirs = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
-    // for (int i = 0; i < 4; i++) {
-    // int newR = r + dirs[i][0];
-    // int newC = c + dirs[i][1];
-    // if (board[newR][newC] == 'O') {
-    // ans = ans && solveHelper(newR, newC, board);
-    // }
-    // }
-    // if (ans) {
-    // board[r][c] = 'X';
-    // }
-    // return ans;
-    // }
 
     // leetcode 130
     public void solve(char[][] board) {
@@ -240,6 +205,52 @@ public class dfsQuestions {
                 // was -> ans && func()
                 // now it works properly
             }
+        }
+        return ans;
+    }
+
+    // https://www.hackerrank.com/challenges/journey-to-the-moon/problem
+    // https://classroom.pepcoding.com/the-placement-program-pitampura-mar-14-2021/116/classvideos/6727#
+    // convert int to long for all cases to pass;
+    public static int journeyToMoon(int n, List<List<Integer>> astronaut) {
+        @SuppressWarnings({ "unchecked" })
+        ArrayList<Integer>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        for (List<Integer> e : astronaut) {
+            graph[e.get(0)].add(e.get(1));
+            graph[e.get(1)].add(e.get(0));
+        }
+
+        // this is the trick for preventing storing gcc sizes and then n2 looping on
+        // them.
+        // trick is that , on Observation,each size multiplies with sum of sizes before
+        // itself.
+        int sum = 0;
+        int ans = 0;
+        boolean[] vis = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            if (!vis[i]) {
+                int size = journeyToMoonHelper(i, vis, graph);
+                if (sum == 0) {
+                    sum = size;
+                } else {
+                    ans += sum * size;
+                    sum += size;
+                }
+            }
+        }
+        return ans;
+    }
+
+    public static int journeyToMoonHelper(int src, boolean[] vis, ArrayList<Integer>[] graph) {
+        int ans = 1;
+        vis[src] = true;
+        for (Integer e : graph[src]) {
+            if (!vis[e])
+                ans += journeyToMoonHelper(e, vis, graph);
         }
         return ans;
     }

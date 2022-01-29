@@ -138,14 +138,43 @@ public class bfsQuestions {
         return ans;
     }
 
-    // leetcode 886
-    public boolean possibleBipartition(int n, int[][] dislikes) {
-        
-    }
-
     // leetcode 542
-    // public int[][] updateMatrix(int[][] mat) {
+    public int[][] updateMatrix(int[][] mat) {
+        LinkedList<Integer> que = new LinkedList<>();
+        int n = mat.length;
+        int m = mat[0].length;
+        boolean[][] vis = new boolean[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (mat[i][j] == 0) {
+                    que.addLast(i * m + j);
+                    vis[i][j] = true;
+                }
+            }
+        }
 
-    // }
+        int level = 0;
+        int[][] dirs = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
+        while (que.size() != 0) {
+            int size = que.size();
+            while (size-- > 0) {
+                int popped = que.removeFirst();
+                int oldR = popped / m;
+                int oldC = popped % m;
+                for (int[] e : dirs) {
+                    int newR = oldR + e[0];
+                    int newC = oldC + e[1];
+                    if (newR >= 0 && newC >= 0 && newC < m && newR < n && !vis[newR][newC]) {
+                        mat[newR][newC] = level + 1;
+                        vis[newR][newC] = true;
+                        que.addLast(newR * m + newC);
+                    }
+                }
+            }
+            level++;
+        }
+
+        return mat;
+    }
 
 }
