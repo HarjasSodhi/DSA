@@ -34,7 +34,7 @@ public class DSU {
 
         int gcc = 0; // find connected components
         for (int i = 0; i < n; i++) {
-            findParent(i);
+            findParent(i); // to make sure absolute parents are set correctly
             if (parent[i] == i)
                 gcc++;
         }
