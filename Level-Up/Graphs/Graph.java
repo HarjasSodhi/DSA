@@ -204,6 +204,12 @@ public class Graph {
         }
     }
 
+    // a linear ordering of its vertices such that for every directed edge uv from
+    // vertex u to vertex v, u comes before v in the ordering
+    // basically postorder of the graph
+    // not possible in cyclic graphs
+    // also not possible in undireceted graph as the direction of edges is not known
+    // cannot detect cycle on its own
     public void topoLogicalSorting1(ArrayList<Edge>[] arr) {
         int size = arr.length;
         ArrayList<Integer> list = new ArrayList<>();
@@ -227,6 +233,47 @@ public class Graph {
             }
         }
         list.add(src);
+    }
+
+    // Topological sort 2
+    // done with BFS
+    // called Kahn's Algo
+    // can detect cycle as all elements with indegree > 0 after bfs is over are part of a cycle.
+    public void topoLogicalSorting2(ArrayList<Edge>[] arr) {
+        int size = arr.length;
+        ArrayList<Integer> list = new ArrayList<>();
+        int[] Indegree = new int[size];
+
+        for (ArrayList<Edge> allEdges : arr) {
+            for (Edge e : allEdges) {
+                Indegree[e.v]++;
+            }
+        }
+
+        LinkedList<Integer> que = new LinkedList<>();
+        for (int i = 0; i < size; i++) {
+            if (Indegree[i] == 0) {
+                que.addLast(i);
+            }
+        }
+
+        while (que.size() != 0) {
+            int queSize = 0;
+            while (queSize-- > 0) { // a level wise list can also be contructed
+                int popped = que.removeFirst();
+                list.add(popped);
+                for (Edge e : arr[popped]) {
+                    Indegree[e.v]--;
+                    if (Indegree[e.v] == 0) {
+                        que.addLast(e.v);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            System.out.print(list.get(i) + " ");
+        }
     }
 
     // in this BFS, we mark node visited,after it is rmeoved from the que,
