@@ -332,9 +332,50 @@ public class DSU {
     }
 
     // leetcode 1202
-    // public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
+    // https://classroom.pepcoding.com/the-placement-program-pitampura-mar-14-2021/116/classvideos/6745#
+    // last one hour
+    public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
+        parent = new int[s.length()];
+        size = new int[s.length()];
+        for (int i = 0; i < s.length(); i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
 
-    // }
+        for (int i = 0; i < pairs.size(); i++) {
+            int p1 = findParent(pairs.get(i).get(0));
+            int p2 = findParent(pairs.get(i).get(1));
+            if (p1 != p2) {
+                mergeParent(p1, p2);
+            }
+        }
+
+        HashMap<Integer, String> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            int p = findParent(i);
+            if (map.containsKey(p)) {
+                map.put(p, map.get(p) + s.charAt(i));
+            } else {
+                map.put(p, s.charAt(i) + "");
+            }
+        }
+
+        for (Integer e : map.keySet()) {
+            char[] chars = map.get(e).toCharArray();
+            Arrays.sort(chars);
+            String sorted = new String(chars);
+            map.put(e, sorted);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            int p = findParent(i);
+            sb.append(map.get(p).charAt(0));
+            map.put(p, map.get(p).substring(1));
+        }
+
+        return sb.toString();
+    }
 
     // leetcode 721
     // public List<List<String>> accountsMerge(List<List<String>> accounts) {
