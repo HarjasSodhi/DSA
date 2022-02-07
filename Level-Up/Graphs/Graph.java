@@ -238,7 +238,8 @@ public class Graph {
     // Topological sort 2
     // done with BFS
     // called Kahn's Algo
-    // can detect cycle as all elements with indegree > 0 after bfs is over are part of a cycle.
+    // can detect cycle as all elements with indegree > 0 after bfs is over are part
+    // of a cycle.
     public void topoLogicalSorting2(ArrayList<Edge>[] arr) {
         int size = arr.length;
         ArrayList<Integer> list = new ArrayList<>();
@@ -329,6 +330,39 @@ public class Graph {
             System.out.println(level);
             level++;
         }
+    }
+
+    // minimun spannig tree
+    // number of vertices=no of edges-1;
+    // kruskal's algo
+    public ArrayList<Edge>[] MSTKruskals(int n, int[][] edges) {
+        int[] parent = new int[n];
+        Arrays.sort(edges, (int[] a, int[] b) -> {
+            return a[2] - b[2];
+        });
+
+        @SuppressWarnings({ "unchecked" })
+        ArrayList<Edge>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            graph[i] = new ArrayList<>();
+        }
+
+        for (int[] edge : edges) {
+            int p1 = findParent(edge[0], parent);
+            int p2 = findParent(edge[1], parent);
+            if (p1 != p2) {
+                parent[p2] = p1;
+                graph[edge[0]].add(new Edge(edge[1], edge[2]));
+            }
+        }
+        return graph;
+    }
+
+    public int findParent(int u, int[] parent) {
+        if (parent[u] == u)
+            return u;
+        return parent[u] = findParent(parent[u], parent);
     }
 
 }
