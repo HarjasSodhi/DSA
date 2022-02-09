@@ -16,6 +16,7 @@ public class DijkstraAndPrims {
         arr[u].add(new Edge(v, wt));
     }
 
+    // dijksta algo is used to find shortest btween 2 points but fails for -ve weights
     public ArrayList<Edge>[] Dijkstra1(ArrayList<Edge>[] graph, int src) {
         int size = graph.length;
         @SuppressWarnings({ "unchecked" })
@@ -100,6 +101,7 @@ public class DijkstraAndPrims {
         return dist;
     }
 
+    // uses dijkstra for constructing MST
     public ArrayList<Edge>[] PrimsAlgo(ArrayList<Edge>[] graph, int src) {
         int size = graph.length;
         @SuppressWarnings({ "unchecked" })
