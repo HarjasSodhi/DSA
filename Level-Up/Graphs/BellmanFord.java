@@ -52,7 +52,9 @@ public class BellmanFord {
         Arrays.fill(dis, (int) (1e8));
         dis[src] = 0;
 
-        for (int i = 1; i <= k + 1; i++) {
+        for (int i = 1; i <= k + 1; i++) { // K+1 because here k reffers to the number of verices i can use and if ii
+                                           // can use 1 vertex to reach the dest,then than means that i can use 2 edges
+                                           // to reach dest, Hence the loop will run k+1 times
             int[] nDis = new int[n];
             for (int j = 0; j < n; j++) {
                 nDis[j] = dis[j];
